@@ -145,7 +145,6 @@ public final class ControlFlowGraphRenderer {
     }
     // close graph definition
     builder.append("}\n");
-    System.out.println(builder.toString());
     // return control-flow graph
     return builder.toString();
   }
