@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -100,18 +99,22 @@ public class DiGraph<N extends Node, E extends Edge<N>> {
    * Check whether a given input edge already exists for a given node.
    */
   public boolean hasInEdge(N node, E edge) {
-    return inEdges.containsKey(node)
-        && node.equals(edge.getDestination())
-        && inEdges.get(node).contains(edge);
+    return (
+      inEdges.containsKey(node) &&
+      node.equals(edge.getDestination()) &&
+      inEdges.get(node).contains(edge)
+    );
   }
 
   /**
    * Check whether a given output edge already exists for a given node.
    */
   public boolean hasOutEdge(N node, E edge) {
-    return outEdges.containsKey(node)
-        && node.equals(edge.getSource())
-        && outEdges.get(node).contains(edge);
+    return (
+      outEdges.containsKey(node) &&
+      node.equals(edge.getSource()) &&
+      outEdges.get(node).contains(edge)
+    );
   }
 
   /**
