@@ -19,38 +19,6 @@ public final class ControlFlowGraphRenderer {
     return String.format(HEADER, label);
   }
 
-  private static String escapeLabel(String s) {
-    if (s == null) return "";
-    StringBuilder out = new StringBuilder();
-    for (int i = 0; i < s.length(); i++) {
-      char c = s.charAt(i);
-      switch (c) {
-        case '"':
-          out.append("\\\"");
-          break;
-        case '\\':
-          out.append("\\\\");
-          break;
-        case '\n':
-          out.append("\\n");
-          break;
-        case '\r':
-          out.append("\\r");
-          break;
-        case '\t':
-          out.append("\\t");
-          break;
-        default:
-          if (c < 32) {
-            out.append(String.format("\\%03o", (int) c));
-          } else {
-            out.append(c);
-          }
-      }
-    }
-    return out.toString();
-  }
-
   private static String renderBasicBlock(BasicBlock bb) {
     if (bb.getInstructionsCount() == 0) return "";
 
@@ -116,7 +84,7 @@ public final class ControlFlowGraphRenderer {
     if (rawLabel == null || rawLabel.isEmpty()) {
       builder.append(" [label=\"\"];");
     } else {
-      builder.append(" [label=\"").append(escapeLabel(rawLabel)).append("\"];");
+      builder.append(" [label=\"").append(rawLabel).append("\"];");
     }
     builder.append("\n");
 
