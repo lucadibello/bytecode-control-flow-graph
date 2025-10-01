@@ -1,0 +1,20 @@
+digraph G {
+  rankdir=TB;
+
+  start [shape=circle, label="S"];
+  end [shape=circle, label="E"];
+
+  node [shape=record, fontname="monospace"];
+  basic_block_1 [label="{B0}|{2: ICONST_0 | 3: ISTORE 2 | 6: ILOAD 1 | IFLE 13}"];
+  basic_block_2_false [label="{B1}|{10: CONST_0 | 11: ISTORE 2 | 12: GOTO 18}"];
+  basic_block_2_true [label="{B2}|{16: ILOAD 1 | 17: ISTORE 2}"];
+  basic_block_3 [label="{B3}|{21: ILOAD 2 | 22: IRETURN}"];
+
+  start->basic_block_1;
+  basic_block_1->basic_block_2_false [label="false"];
+  basic_block_1->basic_block_2_true [label="true"];
+  basic_block_2_true->basic_block_3;
+  basic_block_2_false->basic_block_3;
+
+  basic_block_3->end;
+}
