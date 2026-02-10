@@ -16,14 +16,13 @@ A robust Java bytecode disassembler and Control Flow Graph generator. This tool 
 <table>
   <thead>
     <tr>
-      <th align="left" width="33%">Java Source Code</th>
-      <th align="left" width="33%">Generated CFG (DOT)</th>
-      <th align="left" width="33%">Rendered Graph (PDF)</th>
+      <th align="left" width="50%">Java Source Code</th>
+      <th align="left" width="50%">Generated Control Flow Graph</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>
+      <td valign="top">
 <pre lang="java">
 public int factorial(int n) {
   int result = 1;
@@ -35,23 +34,8 @@ public int factorial(int n) {
 }
 </pre>
       </td>
-      <td>
-<pre lang="dot">
-digraph CFG {
-  label=factorial;
-  node [shape=record];
-  -1 [shape=circle, label=S];
-  -2 [shape=circle, label=X];
-  0 [label="ICONST_1 | ISTORE 2"];
-  1 [label="ILOAD 1 | ICONST_1 | IF_ICMPLE 20"];
-  2 [label="ILOAD 2 | IMUL | ISTORE 2 | IINC 1 -1 | GOTO 4"];
-  3 [label="ILOAD 2 | IRETURN"];
-  -1 -> 0; 0 -> 1; 1 -> 2; 2 -> 1; 1 -> 3 [label="T"]; 3 -> -2;
-}
-</pre>
-      </td>
-      <td align="center">
-        <img src="assets/factorial.dot.png" alt="Factorial CFG" width="100%"/>
+      <td align="center" valign="top">
+        <img src="assets/factorial.dot.png" alt="Factorial CFG" style="width: 100%; height: auto;"/>
       </td>
     </tr>
   </tbody>
