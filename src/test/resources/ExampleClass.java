@@ -1,11 +1,8 @@
 import java.util.Set;
 
-
 /**
  * This class contains a set of methods that are useful for testing
  * Java disassemblers and control-flow graph generators.
- *
- * @author Matthias.Hauswirth@usi.ch
  */
 public class ExampleClass {
 
@@ -16,7 +13,7 @@ public class ExampleClass {
   //--- conditionals
   public int ifMethod(int i) {
     int j = 0;
-    if (i<0) {
+    if (i < 0) {
       j = 1;
     }
     return j;
@@ -24,7 +21,7 @@ public class ExampleClass {
 
   public int ifElseMethod(int i) {
     int j = 0;
-    if (i>0) {
+    if (i > 0) {
       j = 0;
     } else {
       j = i;
@@ -35,10 +32,17 @@ public class ExampleClass {
   public int switchMethod(int i) {
     int j = 0;
     switch (i) {
-      case 0: j = 0; break;
-      case 1: j = 1; break;
-      case 2: j = 2; break;
-      default: j = -1;
+      case 0:
+        j = 0;
+        break;
+      case 1:
+        j = 1;
+        break;
+      case 2:
+        j = 2;
+        break;
+      default:
+        j = -1;
     }
     return j;
   }
@@ -53,12 +57,10 @@ public class ExampleClass {
     return j;
   }
 
-
-
   //--- loops
   public int forMethod(int i) {
     int sum = 0;
-    for (int j=0; j<i; i++) {
+    for (int j = 0; j < i; i++) {
       sum += j;
     }
     return sum;
@@ -66,8 +68,8 @@ public class ExampleClass {
 
   public int whileMethod(int i) {
     int sum = 0;
-    while (i>0) {
-      sum +=i;
+    while (i > 0) {
+      sum += i;
       i--;
     }
     return sum;
@@ -78,7 +80,7 @@ public class ExampleClass {
     do {
       sum += i;
       i--;
-    } while (i>0);
+    } while (i > 0);
     return sum;
   }
 
@@ -100,8 +102,8 @@ public class ExampleClass {
 
   public int forWithBreakMethod(int n) {
     int sum = 0;
-    for (int i=0; i<n; i++) {
-      if (i==10) {
+    for (int i = 0; i < n; i++) {
+      if (i == 10) {
         break;
       }
       sum += i;
@@ -111,8 +113,8 @@ public class ExampleClass {
 
   public int forWithContinueMethod(int n) {
     int sum = 0;
-    for (int i=0; i<n; i++) {
-      if (i==10) {
+    for (int i = 0; i < n; i++) {
+      if (i == 10) {
         continue;
       }
       sum += i;
@@ -133,21 +135,18 @@ public class ExampleClass {
   }
 
   public int forEver(int n) {
-    for (int i=0; true; i++) {
-    }
+    for (int i = 0; true; i++) {}
   }
 
   public int nestedFor(int n) {
     int sum = 0;
-    for (int i=0; i<n; i++) {
-      for (int j=0; j<i; j++) {
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < i; j++) {
         sum += j;
       }
     }
     return sum;
   }
-
-
 
   //--- calls
   public int staticCallMethod(int i) {
@@ -175,21 +174,17 @@ public class ExampleClass {
   }
 
   static class Implementation implements Interface {
+
     public void interfaceCallTarget() {
       return;
     }
   }
 
-  public static void staticCallTarget() {
-  }
+  public static void staticCallTarget() {}
 
-  public void instanceCallTarget() {
-  }
+  public void instanceCallTarget() {}
 
-  private void privateInstanceCallTarget() {
-  }
-
-
+  private void privateInstanceCallTarget() {}
 
   //--- field and array accesses
   private String field;
@@ -224,8 +219,6 @@ public class ExampleClass {
     a[0] = s;
   }
 
-
-
   //--- allocation
   public Object allocObjectMethod() {
     return new Object();
@@ -252,33 +245,31 @@ public class ExampleClass {
   }
 
   public int[] allocAndInitIntArrayMethod() {
-    return new int[] {1, 2};
+    return new int[] { 1, 2 };
   }
 
   public Object[] allocAndInitObjectArrayMethod() {
-    return new Object[] {"1", "2"};
+    return new Object[] { "1", "2" };
   }
 
   public int[][] allocAndInit2dArrayMethod() {
-    return new int[][] {{1}};
+    return new int[][] { { 1 } };
   }
-
-
 
   //--- more conditionals
   public int condMethod(int a, int b) {
-    return a>b?a:b;
+    return a > b ? a : b;
   }
 
   public int shortCircuitMethod(int i, int j, int k) {
-    if (i>j && i<k) {
+    if (i > j && i < k) {
       return 1;
     }
     return 0;
   }
 
   public int nonShortCircuitMethod(int i, int j, int k) {
-    if (i>j & i<k) {
+    if ((i > j) & (i < k)) {
       return 1;
     }
     return 0;

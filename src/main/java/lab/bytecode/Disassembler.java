@@ -86,8 +86,6 @@ import org.objectweb.asm.util.Printer;
  *   30:  IRETURN
  *   31:  // label
  * </pre>
- *
- * @author Matthias.Hauswirth@usi.ch
  */
 public final class Disassembler {
 
@@ -132,17 +130,13 @@ public final class Disassembler {
   public static String disassembleMethod(MethodNode method) {
     final InsnList insns = method.instructions;
     final String instructions = IntStream.range(0, insns.size())
-        // Disassemble instruction
-        .mapToObj(i -> Disassembler.disassembleInstruction(insns.get(i), i, insns))
-        // Add padding
-        .map(s -> "  " + s)
-        // Join
-        .collect(Collectors.joining("\n"));
-    return "  Method: "
-        + method.name
-        + method.desc
-        + "\n"
-        + instructions;
+      // Disassemble instruction
+      .mapToObj(i -> Disassembler.disassembleInstruction(insns.get(i), i, insns))
+      // Add padding
+      .map(s -> "  " + s)
+      // Join
+      .collect(Collectors.joining("\n"));
+    return "  Method: " + method.name + method.desc + "\n" + instructions;
   }
 
   /**
@@ -157,18 +151,15 @@ public final class Disassembler {
    *
    * @see org.objectweb.asm.MethodVisitor
    */
-  public static String disassembleInstruction(AbstractInsnNode instruction,
-      int idx,
-      InsnList instructions) {
+  public static String disassembleInstruction(
+    AbstractInsnNode instruction,
+    int idx,
+    InsnList instructions
+  ) {
     final StringBuilder sb = new StringBuilder();
     final int opcode = instruction.getOpcode();
-    final String mnemonic = opcode == -1
-        ? ""
-        : Printer.OPCODES[instruction.getOpcode()];
-    sb.append(idx)
-        .append(":\t")
-        .append(mnemonic)
-        .append(" ");
+    final String mnemonic = opcode == -1 ? "" : Printer.OPCODES[instruction.getOpcode()];
+    sb.append(idx).append(":\t").append(mnemonic).append(" ");
 
     /*
      * There are different subclasses of AbstractInsnNode.
@@ -191,13 +182,10 @@ public final class Disassembler {
     switch (instruction) {
       /* Pseudo-instruction: branch or exception target */
       case LabelNode ignored -> sb.append("// label");
-
       /* Pseudo-instruction: stack frame map */
       case FrameNode ignored -> sb.append("// stack frame map");
-
       /* Pseudo-instruction: line number information */
       case LineNumberNode ignored -> sb.append("// line number information");
-
       /* Opcodes: NEWARRAY, BIPUSH, SIPUSH. */
       case IntInsnNode intNode -> {
         final int operand = intNode.operand;
@@ -207,53 +195,45 @@ public final class Disassembler {
           sb.append(operand);
         }
       }
-
       /*
        * Opcodes: IFEQ, IFNE, IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ,
        * IF_ICMPNE, IF_ICMPLT, IF_ICMPGE, IF_ICMPGT, IF_ICMPLE, IF_ACMPEQ,
        * IF_ACMPNE, GOTO, JSR, IFNULL or IFNONNULL.
        */
       case JumpInsnNode jumpNode -> sb.append(instructions.indexOf(jumpNode.label));
-
       /* Opcodes: LDC. */
       case LdcInsnNode ldcNode -> sb.append(ldcNode.cst);
-
       /* Opcodes: IINC. */
-      case IincInsnNode iIncNode -> sb.append(iIncNode.var)
-          .append(" ")
-          .append(iIncNode.incr);
-
+      case IincInsnNode iIncNode -> sb.append(iIncNode.var).append(" ").append(iIncNode.incr);
       /* Opcodes: NEW, ANEWARRAY, CHECKCAST or INSTANCEOF. */
       case TypeInsnNode typeNode -> sb.append(typeNode.desc);
-
       /*
        * Opcodes: ILOAD, LLOAD, FLOAD, DLOAD, ALOAD, ISTORE,
        * LSTORE, FSTORE, DSTORE, ASTORE or RET.
        */
       case VarInsnNode varNode -> sb.append(varNode.var);
-
       /* Opcodes: GETSTATIC, PUTSTATIC, GETFIELD or PUTFIELD. */
-      case FieldInsnNode fieldNode -> sb.append(fieldNode.owner)
-          .append(".")
-          .append(fieldNode.name)
-          .append(" ")
-          .append(fieldNode.desc);
-
+      case FieldInsnNode fieldNode -> sb
+        .append(fieldNode.owner)
+        .append(".")
+        .append(fieldNode.name)
+        .append(" ")
+        .append(fieldNode.desc);
       /*
        * Opcodes: INVOKEVIRTUAL, INVOKESPECIAL, INVOKESTATIC,
        * INVOKEINTERFACE or INVOKEDYNAMIC.
        */
-      case MethodInsnNode methodNode -> sb.append(methodNode.owner)
-          .append(".")
-          .append(methodNode.name)
-          .append(" ")
-          .append(methodNode.desc);
-
+      case MethodInsnNode methodNode -> sb
+        .append(methodNode.owner)
+        .append(".")
+        .append(methodNode.name)
+        .append(" ")
+        .append(methodNode.desc);
       /* Opcodes: MULTIANEWARRAY. */
-      case MultiANewArrayInsnNode newArrayNode -> sb.append(newArrayNode.desc)
-          .append(" ")
-          .append(newArrayNode.dims);
-
+      case MultiANewArrayInsnNode newArrayNode -> sb
+        .append(newArrayNode.desc)
+        .append(" ")
+        .append(newArrayNode.dims);
       /* Opcodes: LOOKUPSWITCH. */
       case LookupSwitchInsnNode lookupSwitchNode -> {
         sb.append("( ");
@@ -264,18 +244,12 @@ public final class Disassembler {
           final int key = keys.get(i);
           final LabelNode targetInsn = labels.get(i);
           final int targetId = instructions.indexOf(targetInsn);
-          sb.append(key)
-              .append(": ")
-              .append(targetId)
-              .append(", ");
+          sb.append(key).append(": ").append(targetId).append(", ");
         }
         final LabelNode defaultInsn = lookupSwitchNode.dflt;
         final int defaultTargetId = instructions.indexOf(defaultInsn);
-        sb.append("default: ")
-            .append(defaultTargetId)
-            .append(" )");
+        sb.append("default: ").append(defaultTargetId).append(" )");
       }
-
       /* Opcodes: TABLESWITCH. */
       case TableSwitchInsnNode tableSwitchNode -> {
         sb.append("( ");
@@ -286,18 +260,12 @@ public final class Disassembler {
           final int key = minKey + i;
           final LabelNode targetInsn = labels.get(i);
           final int targetId = instructions.indexOf(targetInsn);
-          sb.append(key)
-              .append(": ")
-              .append(targetId)
-              .append(", ");
+          sb.append(key).append(": ").append(targetId).append(", ");
         }
         final LabelNode defaultInsn = tableSwitchNode.dflt;
         final int defaultTargetId = instructions.indexOf(defaultInsn);
-        sb.append("default: ")
-            .append(defaultTargetId)
-            .append(" )");
+        sb.append("default: ").append(defaultTargetId).append(" )");
       }
-
       /*
        * Opcodes: NOP, ACONST_NULL, ICONST_M1, ICONST_0, ICONST_1, ICONST_2,
        * ICONST_3, ICONST_4, ICONST_5, LCONST_0, LCONST_1, FCONST_0,
@@ -313,9 +281,12 @@ public final class Disassembler {
        * FRETURN, DRETURN, ARETURN, RETURN, ARRAYLENGTH, ATHROW,
        * MONITORENTER, or MONITOREXIT.
        */
-      case InsnNode ignored -> { /* Zero operands: nothing to print */ }
-
-      default -> { /* NOOP */ }
+      case InsnNode ignored -> {
+        /* Zero operands: nothing to print */
+      }
+      default -> {
+        /* NOOP */
+      }
     }
     return sb.toString();
   }
