@@ -3,6 +3,10 @@
 .settings
 .classpath
 
+# Example
+example/*.class
+example/output/
+
 # Gradle
 /.gradle/
 /build/
